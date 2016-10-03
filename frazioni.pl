@@ -42,5 +42,7 @@ test:-
 	semplifica([3,1], 3),
 	
 	prodotto([5,2], [2,5], _X), _X == 1,
+	prodotto([5,2], [2,5], 1),
+	prodotto([5,2], [2,5], [1,1]),
 	
 	true.
