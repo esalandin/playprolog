@@ -4,10 +4,6 @@ mcd(X,Y,Z) :- Y>0, X1 is X mod Y, mcd(Y,X1,Z).
 
 is_fraction(F) :- is_list(F), length(F,2).
 
-semplifica1([N,D],[NS,DS]) :-
-    mcd(N,D,1), NS is N, DS is D, !;
-    mcd(N,D,_Z), NS is N div _Z, DS is D div _Z.
-	
 semplifica([N,D],F) :-
     mcd(N,D,_Z), _NS is N div _Z, _DS is D div _Z, (_DS == 1, F is _NS, !; F = [_NS,_DS]).
 
