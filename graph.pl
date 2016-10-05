@@ -6,6 +6,7 @@ con(4,5).
 con(3,5).
 
 rcon(A,B):- con(A,B).
+% rcon(A,B):- con(B,A).
 
 mcon(A,B,Cost,Path):- rcon(A,B), Cost is 1, Path = [B].
 mcon(A,B,Cost,Path):-
@@ -29,7 +30,11 @@ list_min([L|Ls], Min0, Min) :-
 
 min_path_cost_couple(A,B,C):- path_cost_list(A,B,List), list_min(List, C).
 
+% trova percorso a costo minimo
 min_path(A,B,Path):- min_path_cost_couple(A,B,[_Cost, Path]).
+
+% come sopra, ma utilizzando finite domain (solo in gprolog),
+fd_min_path(A,B,Path):- fd_minimize(mconp(A,B,Cost,Path), Cost).
 	
 test:-
 	mcon(1,2,1,[2]),
@@ -37,4 +42,5 @@ test:-
 	mcon(1,5,2,[3,5]),
 	mconp(1,5,2,[1,3,5]),
 	min_path(1,5,[1,3,5]),
+	fd_min_path(1,5,[1,3,5]),
 	true.
