@@ -7,15 +7,16 @@ con(3,5).
 
 rcon(A,B):- con(A,B);con(B,A).
 
+mcon(X,X,_,_):- !, fail.
 mcon(A,B,Cost,Path):- rcon(A,B), Cost is 1, Path = [B].
 mcon(A,B,Cost,Path):-
     rcon(A, _X),
     mcon(_X, B, RemCost, RemPath),
-    newpath(_X, Path),
     Cost is RemCost+1,
+    not_member(_X, RemPath),
     Path=[_X|RemPath].
 
-newpath(Node, Path) :- memberchk(Node, Path), !, fail; true.
+not_member(Node, Path) :- memberchk(Node, Path), !, fail; true.
 
 % path con il primo nodo in testa.
 mconp(A,B,C,P) :- mcon(A,B,C, _Path), P=[A|_Path].
