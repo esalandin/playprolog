@@ -46,8 +46,9 @@ min_path_cost_couple(A,B,C):- path_cost_list(A,B,List), list_min(List, C).
 
 minpath(A,B,Path,Cost):- min_path_cost_couple(A,B,[Cost, Path]).
 
+test(A):- A, !; print(A), print(' failed'),nl,fail.
 test:-
-	path(1,5,[1,3,5],2),
-	path(1,5,[1,2,4,5],3),
-	minpath(1,5,[1,3,5],2),
+	test(path(1,5,[1,3,5],2)),
+	test(path(1,5,[1,2,4,5],3)),
+	test(minpath(1,5,[1,3,5],2)),
 	true.
