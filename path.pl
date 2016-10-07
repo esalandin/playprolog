@@ -7,17 +7,19 @@ con(3,5).
 
 rcon(A,B):- con(A,B);con(B,A).
 
-path(A,A,_):- !, fail.
-path(A,B, [A,B]):- rcon(A,B).
-path(A,B,Path):- path(A,B,_,Path).
+pathfind(A,B, OldPath, NewPath, Cost):-
+	rcon(A,B),
+	addpath(OldPath, B, _), % controlla che B non sia gia' sul percorso.
+	NewPath=[B],
+	Cost is 1.
 
-path(A,B, X, Path):-
-	path(A,X, P1), path(X,B, P2),
-	remove_last(P1, PP1),
-	P2=[_|PP2],
-	(memberchk(X, PP1), !, fail),
-	(memberchk(X, PP2), !, fail),
-	append(PP1, [X|PP2], Path).
-	
-remove_last(I,O):- reverse(I,RI), RI=[_|RO], reverse(RO, O).
+pathfind(A,B, OldPath, NewPath, Cost):-
+	rcon(A,X),
+	addpath(OldPath,X,XP),
+	pathfind(X,B,XP, RemPath, RemCost),
+	NewPath=[X|RemPath],
+	Cost is RemCost+1.
 
+addpath(Path,X,NewPath):-
+	memberchk(X, Path),!, fail;
+	NewPath=[X|Path].
