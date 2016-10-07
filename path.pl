@@ -4,9 +4,12 @@ con(2,4).
 con(3,4).
 con(4,5).
 con(3,5).
+con(5,2).
 
-rcon(A,B):- con(A,B);con(B,A). % bidirezionali
+rcon(A,B):- con(A,B). % unidirezionali
 
+% pathfinder, trova il path senza loop;
+% OldPath serve come elenco di nodi gia' percorsi.
 pathfinder(A,B, OldPath, NewPath, Cost):-
 	rcon(A,B),
 	addpath(OldPath, B, _), % controlla che B non sia gia' sul percorso.
@@ -20,6 +23,7 @@ pathfinder(A,B, OldPath, NewPath, Cost):-
 	NewPath=[X|RemPath],
 	Cost is RemCost+1.
 
+% addpath fallisce se X e' gia' nel Path.
 addpath(Path,X,NewPath):-
 	memberchk(X, Path),!, fail;
 	NewPath=[X|Path].
@@ -41,9 +45,9 @@ list_min([L|Ls], Min0, Min) :-
 min_path_cost_couple(A,B,C):- path_cost_list(A,B,List), list_min(List, C).
 
 minpath(A,B,Path,Cost):- min_path_cost_couple(A,B,[Cost, Path]).
-	
+
 test:-
 	path(1,5,[1,3,5],2),
-	path(1,5,[1,2,4,3,5],4),
+	path(1,5,[1,2,4,5],3),
 	minpath(1,5,[1,3,5],2),
 	true.
