@@ -12,13 +12,14 @@ velocita_carro(2, 1.0).
 
 distanza_minima_carri(10).
 
-t_min(0).
-t_max(30).
-
 % posizione_carro(Tempo, Carro, Posizione).
 
 posizione_iniziale([[0, 1, 1], [0, 2, 4]]).
 posizione_test([[0, 1, 1], [0, 2, 4], [10,1,2], [10,2,3], [20,1, 3], [20,2,4]]).
+
+elenco_tempi(LP, LTS, Tmin, Tmax):- findall(T, member([T, _C, _P], LP), LT), sort(LT, LTS), nth(1, LTS, Tmin), last(LTS, Tmax).
+t_min(LP, T):- elenco_tempi(LP, _, T, _).
+t_max(LP, T):- elenco_tempi(LP, _, _, T).
 
 lista_posizioni_carro(LP, C, LPCS):- findall([T,P], member([T, C, P], LP), LPC), sort(LPC, LPCS).
 
@@ -44,7 +45,7 @@ fail_distanza_carri(LP, C1, C2, T):-
 	distanza_minima_carri(Dmin),
 	C1 \= C2,
 	lista_posizioni_carro(LP, C1, LPCS1), lista_posizioni_carro(LP, C2, LPCS2),
-	t_min(Tmin), t_max(Tmax),
+	t_min(LP, Tmin), t_max(LP, Tmax),
 	between(Tmin, Tmax, T),
 	posizione_x_carro(LPCS1, T, X1), posizione_x_carro(LPCS2, T, X2),
 	D is abs(X2-X1), D < Dmin, !.
