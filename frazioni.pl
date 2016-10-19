@@ -23,6 +23,9 @@ prodotto(A, B, S) :- \+ is_fraction(A), prodotto([A,1],B,S), !.
 potenza(_F,0, [1,1]) :- !.
 potenza(F,N,Pot) :- N>0, _PN is N - 1, potenza(F,_PN, _TPot), prodotto(F,_TPot,Pot).
 
+to_float([N, D], F):- F is N/D.
+to_float(N, F):- integer(N), F is N.
+
 % tests
 
 test(A):- A, !; print(A), print(' failed'),nl,fail.
