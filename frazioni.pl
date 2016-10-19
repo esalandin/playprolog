@@ -24,25 +24,27 @@ potenza(_F,0, [1,1]) :- !.
 potenza(F,N,Pot) :- N>0, _PN is N - 1, potenza(F,_PN, _TPot), prodotto(F,_TPot,Pot).
 
 % tests
+
+test(A):- A, !; print(A), print(' failed'),nl,fail.
 test:- 
-    semplifica([12,4], [3,1]),
-	semplifica([12,4], 3),
-	somma([1,2], [3,2], [2,1]),
-    prodotto([2,3], [3,2], [1,1]),
-	potenza([2,3], 2, [4,9]),
+    test( semplifica([12,4], [3,1])),
+	test( semplifica([12,4], 3)),
+	test( somma([1,2], [3,2], [2,1])),
+    test( prodotto([2,3], [3,2], [1,1])),
+	test( potenza([2,3], 2, [4,9])),
 	
-	somma([1,2],1,[3,2]),
-	somma(2,[1,2], [5,2]),
-	somma(1,2,[3,1]),
-	somma([4,3],[2,3],2),
-	prodotto(3,5,[15,1]),
-	potenza(2,8,[256,1]),
+	test( somma([1,2],1,[3,2])),
+	test( somma(2,[1,2], [5,2])),
+	test( somma(1,2,[3,1])),
+	test( somma([4,3],[2,3],2)),
+	test( prodotto(3,5,[15,1])),
+	test( potenza(2,8,[256,1])),
 	
-	semplifica([3,1],[3,1]),
-	semplifica([3,1], 3),
+	test( semplifica([3,1],[3,1])),
+	test( semplifica([3,1], 3)),
 	
-	prodotto([5,2], [2,5], _X), _X == 1,
-	prodotto([5,2], [2,5], 1),
-	prodotto([5,2], [2,5], [1,1]),
+	test( (prodotto([5,2], [2,5], _X), _X == 1)),
+	test( prodotto([5,2], [2,5], 1)),
+	test( prodotto([5,2], [2,5], [1,1])),
 	
 	true.
