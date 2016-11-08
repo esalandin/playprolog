@@ -4,9 +4,13 @@ mcd(X,Y,Z) :- Y>0, X1 is X mod Y, mcd(Y,X1,Z).
 
 is_fraction(F) :- is_list(F), length(F,2).
 
-semplifica([N,D],F) :-
+semplifica([Ni,Di],F) :-
+    norm_segno([Ni, Di], [N, D]),
     mcd(N,D,_Z), _NS is N div _Z, _DS is D div _Z, (_DS == 1, F is _NS, !; F = [_NS,_DS]).
 
+norm_segno([N, D], [N, D]):- D>0.
+norm_segno([N, D], [No, Do]):- D<0, Do is -D, No is -N.
+	
 somma([AN,AD], [BN, BD], S) :-
     _TSD is AD * BD, _TSN is AN * BD + BN * AD, semplifica([_TSN,_TSD],S), !.
 	
@@ -31,7 +35,7 @@ to_float(N, F):- integer(N), F is N.
 test(A):- A, !; print(A), print(' failed'),nl,fail.
 test:- 
     test( semplifica([12,4], [3,1])),
-	test( semplifica([12,4], 3)),
+	test( semplifica([12,-4], -3)),
 	test( somma([1,2], [3,2], [2,1])),
     test( prodotto([2,3], [3,2], [1,1])),
 	test( potenza([2,3], 2, [4,9])),
